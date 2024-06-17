@@ -10,7 +10,7 @@ print(db.nginx.estimated_document_count(), "logs")
 print("Methods:")
 
 for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
-    print(f"\tmethod {method}: {db.nginx.count_documents({'method': method})}")
+    print(f"    method {method}: {db.nginx.count_documents({'method': method})}")
 
 count = db.nginx.count_documents(
     {"method": "GET", "path": "/status"}
