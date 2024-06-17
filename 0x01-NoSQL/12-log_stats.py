@@ -13,6 +13,6 @@ for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
     print(f"\tmethod {method}: {db.nginx.count_documents({'method': method})}")
 
 count = db.nginx.count_documents(
-    {"method": "GET", "path": {"$regex": "^/.*status.*$"}}
+    {"method": "GET", "path": "/status"}
     )
 print(count, "status", "check")
