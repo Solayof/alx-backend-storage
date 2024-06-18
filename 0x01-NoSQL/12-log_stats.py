@@ -3,16 +3,16 @@
 from pymongo import MongoClient
 
 
-client = MongoClient()
-db = client.logs
+if __name__ ==     "__main__":
+    client = MongoClient()
+    db = client.logs
 
-print(db.nginx.estimated_document_count(), "logs")
-print("Methods:")
+    print(db.nginx.estimated_document_count(), "logs")
+    print("Methods:")
+    for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
+        print(f"\tmethod {method}: {db.nginx.count_documents({'method': method})}")
 
-for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
-    print(f"\tmethod {method}: {db.nginx.count_documents({'method': method})}")
-
-count = db.nginx.count_documents(
-    {"method": "GET", "path": "/status"}
-    )
-print(count, "status", "check")
+    count = db.nginx.count_documents(
+        {"method": "GET", "path": "/status"}
+        )
+    print(count, "status", "check")
