@@ -22,7 +22,7 @@ def count_calls(method: Callable) -> Callable:
 def call_hostory(method: Callable) -> Callable:
     """store the history of input and output of a funcion"""
     inputs = method.__qualname__ + ":inputs"
-    outputs = method.__qualname__ + ":output"
+    outputs = method.__qualname__ + ":outputs"
 
     @wraps(method)
     def wrapper(self, *args, **kwargs):
@@ -39,11 +39,11 @@ class Cache:
     def __init__(self):
         """initialize instance redis db"""
         self._redis = redis.Redis()
-        self._redis.flushdb
+        self._redis.flushdb()
 
     @count_calls
     @call_hostory
-    def store(self, data: UnionOfTypes):
+    def store(self, data: UnionOfTypes) -> str:
         """
         method that takes a data argument and returns a string. The method
         should generate a random key (e.g. using uuid),
