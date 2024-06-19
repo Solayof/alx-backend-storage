@@ -15,7 +15,22 @@ def count_calls(method: Callable) -> Callable:
     def wrapper(self, *args, **kwargs):
         """wrapper function"""
         self._redis.incr(key)
-        return method(self, *args,**kwargs)
+        return method(self, *args, **kwargs)
+    return wrapper
+
+
+def call_hostory(method: Callable) -> Callable:
+    """store the history of input and output of a funcion"""
+    inputs = method.__qualname__ + ":inputs"
+    outputs = method.__qualname__ + ":output"
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """wrapper function"""
+        self._redis.rpush(inputs, str(args))
+        output = method(self, *args)
+        self._redis.rpush(outputs, output)
+        return output
     return wrapper
 
 
@@ -27,6 +42,7 @@ class Cache:
         self._redis.flushdb
 
     @count_calls
+    @call_hostory
     def store(self, data: UnionOfTypes):
         """
         method that takes a data argument and returns a string. The method
