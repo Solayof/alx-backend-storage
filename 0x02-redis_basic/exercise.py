@@ -19,7 +19,7 @@ def count_calls(method: Callable) -> Callable:
     return wrapper
 
 
-def call_hostory(method: Callable) -> Callable:
+def call_history(method: Callable) -> Callable:
     """store the history of input and output of a funcion"""
     inputs = method.__qualname__ + ":inputs"
     outputs = method.__qualname__ + ":outputs"
@@ -42,7 +42,7 @@ class Cache:
         self._redis.flushdb()
 
     @count_calls
-    @call_hostory
+    @call_history
     def store(self, data: UnionOfTypes) -> str:
         """
         method that takes a data argument and returns a string. The method
